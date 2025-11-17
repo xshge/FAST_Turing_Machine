@@ -124,7 +124,15 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
             numGuesses++;
 
             if (selectedIndex == (teaserIndex + 1)) {
-                ChangeScreen("reward");
+                //change to the Transition Screen
+                if (currentScreenName.Equals("hint"))
+                {
+                    ChangeScreen("summary");
+                }
+                else
+                {
+                    ChangeScreen("transition");
+                }
             }
             else {
                 if (numGuesses >= maxNumGuesses) {
@@ -165,7 +173,8 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
         }
 
 
-        ChangeScanAudio.Invoke(currentScreenName.Equals("teaser"));
+        ChangeScanAudio.Invoke(currentScreenName.Equals("teaser"));//change the name when switch to a different screen 
+
     }
     protected override IEnumerator ChangeLanguage()
     {

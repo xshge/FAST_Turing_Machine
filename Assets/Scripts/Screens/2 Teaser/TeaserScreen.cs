@@ -41,30 +41,20 @@ public class TeaserScreen : ActivityScreen
     [SerializeField]
     private Image question2Image;
     [SerializeField]
-    private Image thumbnailImage;
-    [SerializeField]
-    private Image promptImage;
+    private Image DialogueImage;
+   
 
     private ImageFromFile question2ImageFromFile;
-    private ImageFromFile thumbnailImageFromFile;
+    private ImageFromFile dialogueImageFromFile;
 
     override protected void Awake()
     {
         base.Awake();
 
         question2ImageFromFile = question2Image.GetComponent<ImageFromFile>();
-        thumbnailImageFromFile = thumbnailImage.GetComponent<ImageFromFile>();
+        dialogueImageFromFile = DialogueImage.GetComponent<ImageFromFile>();
     }
 
-    override public void OnScanStart()
-    {
-        promptImage.enabled = false;
-    }
-
-    override public void OnScanDone()
-    {
-        promptImage.enabled = true;
-    }
 
     override protected IEnumerator PlayScreenAnimation()
     { // Load and initialize
@@ -76,19 +66,22 @@ public class TeaserScreen : ActivityScreen
             screenManager.teaserName);
         audioLUT["Teaser-Question-2-Narration.mp3"].Load(FAST.Application.language);
 
+        audioLUT["Teaser-Dialogue-3-Narration.mp3"].baseFileName = string.Format("Teaser-Dialogue-3-{0}-Narration.wav",
+            screenManager.teaserName);
+        audioLUT["Teaser-Dialogue-3-Narration.mp3"].Load(FAST.Application.language);
+
         backgroundImage.CrossFadeAlpha(0f, 0f, false);
         question1Image.CrossFadeAlpha(0f, 0f, false);
 
-        question2ImageFromFile.baseFileName = string.Format("Teaser-Question-2-{0}.png", screenManager.teaserName);
+        question2ImageFromFile.baseFileName = string.Format("Teaser-Line-{0}.png", screenManager.teaserName);
         question2ImageFromFile.Load(FAST.Application.language);
         question2Image.CrossFadeAlpha(0f, 0f, false);
 
-        thumbnailImageFromFile.baseFileName = string.Format("Teaser-Image-{0}.png", screenManager.teaserName);
-        thumbnailImageFromFile.Load(FAST.Application.language);
-        thumbnailImage.CrossFadeAlpha(0f, 0f, false);
+        dialogueImageFromFile.baseFileName = string.Format("Teaser-Line-2-{0}.png", screenManager.teaserName);
+        dialogueImageFromFile.Load(FAST.Application.language);
+        DialogueImage.CrossFadeAlpha(0f, 0f, false);
 
-        promptImage.enabled = true;
-        promptImage.CrossFadeAlpha(0f, 0f, false);
+        
 
         // Animate
         yield return null;
@@ -100,14 +93,18 @@ public class TeaserScreen : ActivityScreen
         audioPlayer.Play(new AudioClip[] { audioLUT["Teaser-Question-1-Narration.mp3"].audioClip });
         yield return new WaitWhile(() => audioPlayer.IsRunning);
 
-        question2Image.CrossFadeAlpha(1f, 0.5f, false);
-        thumbnailImage.CrossFadeAlpha(1f, 0.5f, false);
+        
+        DialogueImage.CrossFadeAlpha(1f, 0.5f, false);
         audioPlayer.Play(new AudioClip[] { audioLUT["Teaser-Question-2-Narration.mp3"].audioClip });
         yield return new WaitWhile(() => audioPlayer.IsRunning);
 
-        promptImage.CrossFadeAlpha(1f, 0.5f, false);
-        audioPlayer.Play(new AudioClip[] { audioLUT["Teaser-Prompt-Narration.mp3"].audioClip });
+        question2Image.CrossFadeAlpha(1f, 0.5f, false);
+        audioPlayer.Play(new AudioClip[] { audioLUT["Teaser-Dialogue-3-Narration.mp3"].audioClip });
         yield return new WaitWhile(() => audioPlayer.IsRunning);
+      
+
+        //TODO: change screen to the prompt screen;
+        screenManager.ChangeScreen("prompt");
     }
 
  
