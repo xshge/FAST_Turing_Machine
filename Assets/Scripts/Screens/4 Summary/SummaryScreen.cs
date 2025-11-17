@@ -35,12 +35,13 @@ public class SummaryScreen : ActivityScreen
 {
     [Header("Images")]
     [SerializeField]
-    private Image observeImage;
+    private Image backgroundImage;
     [SerializeField]
     private Image objectImage;
     [SerializeField]
     private Image[] infoImages = new Image[3];
 
+    private ImageFromFile backimage;
     private ImageFromFile objectImageFromFile;
     private ImageFromFile[] infoImagesFromFile = new ImageFromFile[3];
 
@@ -48,6 +49,7 @@ public class SummaryScreen : ActivityScreen
     {
         base.Awake();
         objectImageFromFile = objectImage.GetComponent<ImageFromFile>();
+        backimage = backgroundImage.GetComponent<ImageFromFile>();
         for (int i = 0; i < infoImages.Length; i++) {
             infoImagesFromFile[i] = infoImages[i].GetComponent<ImageFromFile>();
         }
@@ -68,12 +70,15 @@ public class SummaryScreen : ActivityScreen
                 audioClipFromFile.audioClip = AudioClipExtensions.CreatePauseClip(0.01f);
             }
         }
-
-        observeImage.CrossFadeAlpha(0f, 0f, false);
+        backimage.baseFileName = string.Format("Summary-Background-{0}.png", screenManager.teaserName);
+        backimage.Load(FAST.Application.language);
+        backgroundImage.CrossFadeAlpha(0f, 0f, false);
 
         objectImageFromFile.baseFileName = string.Format("Summary-Image-{0}.png", screenManager.teaserName);
         objectImageFromFile.Load(FAST.Application.language);
         objectImage.CrossFadeAlpha(0f, 0f, false);
+
+        //loading feature image assets and checking if they exist
 
         for (int i = 0; i < infoImages.Length; i++) {
             infoImagesFromFile[i].baseFileName = $"Summary-Feature-{i+1}-{screenManager.teaserName}.png";
@@ -87,14 +92,18 @@ public class SummaryScreen : ActivityScreen
         // Animate
         yield return null;
 
-        observeImage.CrossFadeAlpha(1f, 0.5f, false);
+        backgroundImage.CrossFadeAlpha(1f, 0.5f, false);
         objectImage.CrossFadeAlpha(1f, 0.5f, false);
-        audioPlayer.Play(new AudioClip[] { audioLUT["Summary-Observe-Narration.mp3"].audioClip });
-        yield return new WaitWhile(() => audioPlayer.IsRunning);
+        /*audioPlayer.Play(new AudioClip[] { audioLUT["Summary-Observe-Narration.mp3"].audioClip });
+        yield return new WaitWhile(() => audioPlayer.IsRunning);*/
 
         for (int i = 0; i < infoImages.Length; i++) {
+            if (screenManager.teaserName != "RSA" && i == 1)
+            {
+                //fade out the previous image
+                infoImages[i - 1].CrossFadeAlpha(0, 0.5f, false);
+            }
             infoImages[i].CrossFadeAlpha(1f, 0.5f, false);
-
             audioPlayer.Play(new AudioClip[] { audioLUT[$"Feature-{i+1}-Narration.mp3"].audioClip });
             yield return new WaitWhile(() => audioPlayer.IsRunning);
         }
