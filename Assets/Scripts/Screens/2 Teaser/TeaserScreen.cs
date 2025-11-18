@@ -37,13 +37,11 @@ public class TeaserScreen : ActivityScreen
     [SerializeField]
     private Image backgroundImage;
     [SerializeField]
-    private Image question1Image;
-    [SerializeField]
     private Image question2Image;
     [SerializeField]
     private Image DialogueImage;
-   
 
+    private ImageFromFile backgroundFromFile;
     private ImageFromFile question2ImageFromFile;
     private ImageFromFile dialogueImageFromFile;
 
@@ -53,14 +51,13 @@ public class TeaserScreen : ActivityScreen
 
         question2ImageFromFile = question2Image.GetComponent<ImageFromFile>();
         dialogueImageFromFile = DialogueImage.GetComponent<ImageFromFile>();
+        backgroundFromFile = backgroundImage.GetComponent<ImageFromFile>();
     }
 
 
     override protected IEnumerator PlayScreenAnimation()
     { // Load and initialize
-        audioLUT["Teaser-Question-1-Narration.mp3"].baseFileName = string.Format("Teaser-Question-1-{0}-Narration.mp3",
-            screenManager.teaserName);
-        audioLUT["Teaser-Question-1-Narration.mp3"].Load(FAST.Application.language);
+
 
         audioLUT["Teaser-Question-2-Narration.mp3"].baseFileName = string.Format("Teaser-Question-2-{0}-Narration.mp3",
             screenManager.teaserName);
@@ -70,8 +67,10 @@ public class TeaserScreen : ActivityScreen
             screenManager.teaserName);
         audioLUT["Teaser-Dialogue-3-Narration.mp3"].Load(FAST.Application.language);
 
+        backgroundFromFile.baseFileName = string.Format("Teaser-Background-{0}.png", screenManager.teaserName);
+        backgroundFromFile.Load(FAST.Application.language);
         backgroundImage.CrossFadeAlpha(0f, 0f, false);
-        question1Image.CrossFadeAlpha(0f, 0f, false);
+        
 
         question2ImageFromFile.baseFileName = string.Format("Teaser-Line-{0}.png", screenManager.teaserName);
         question2ImageFromFile.Load(FAST.Application.language);
@@ -89,11 +88,10 @@ public class TeaserScreen : ActivityScreen
         yield return new WaitForSecondsRealtime(0.25f);
 
         backgroundImage.CrossFadeAlpha(1f, 0.5f, false);
-        question1Image.CrossFadeAlpha(1f, 0.5f, false);
-        audioPlayer.Play(new AudioClip[] { audioLUT["Teaser-Question-1-Narration.mp3"].audioClip });
-        yield return new WaitWhile(() => audioPlayer.IsRunning);
+       
+        yield return new WaitForSecondsRealtime(0.25f);
 
-        
+
         DialogueImage.CrossFadeAlpha(1f, 0.5f, false);
         audioPlayer.Play(new AudioClip[] { audioLUT["Teaser-Question-2-Narration.mp3"].audioClip });
         yield return new WaitWhile(() => audioPlayer.IsRunning);
