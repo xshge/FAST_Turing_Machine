@@ -19,7 +19,7 @@ public class Transition_Screen : ActivityScreen
         yield return null;
 
         CorrectFile.CrossFadeAlpha(1f, 0.5f, false);
-        
+        screenManager.gotAnswerRight = true;
         yield return new WaitForSeconds(2f);
         
         screenManager.ChangeScreen("summary");

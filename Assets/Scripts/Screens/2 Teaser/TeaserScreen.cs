@@ -72,11 +72,11 @@ public class TeaserScreen : ActivityScreen
         backgroundImage.CrossFadeAlpha(0f, 0f, false);
         
 
-        question2ImageFromFile.baseFileName = string.Format("Teaser-Line-{0}.png", screenManager.teaserName);
+        question2ImageFromFile.baseFileName = string.Format("Teaser-Line-2-{0}.png", screenManager.teaserName);
         question2ImageFromFile.Load(FAST.Application.language);
         question2Image.CrossFadeAlpha(0f, 0f, false);
 
-        dialogueImageFromFile.baseFileName = string.Format("Teaser-Line-2-{0}.png", screenManager.teaserName);
+        dialogueImageFromFile.baseFileName = string.Format("Teaser-Line-{0}.png", screenManager.teaserName);
         dialogueImageFromFile.Load(FAST.Application.language);
         DialogueImage.CrossFadeAlpha(0f, 0f, false);
 

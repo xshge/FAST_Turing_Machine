@@ -34,26 +34,36 @@ using FAST;
 public class StartScreen : ActivityScreen
 {
     [Header("Images")]
+    //[SerializeField]
+    //private Image promptImage;
     [SerializeField]
-    private Image promptImage;
-
+    private Image progress;
     override public void OnScanStart()
     {
-        promptImage.enabled = false;
+        
     }
 
     override public void OnScanDone()
     {
-        promptImage.enabled = true;
+        
         PlayScreen();
     }
 
     override protected IEnumerator PlayScreenAnimation()
     {
-        promptImage.enabled = true;
-        yield return null;
-
+        
         audioPlayer.Play(new AudioClip[] { audioLUT["Start-Prompt-Narration.mp3"].audioClip });
         yield return new WaitWhile(() => audioPlayer.IsRunning);
+
+        if (screenManager.gotAnswerRight)
+        {
+            progress.fillAmount += .333f;
+        }
+        else {
+            progress.fillAmount += .1665f;
+
+        }
+
+            yield return null;
     }
 }

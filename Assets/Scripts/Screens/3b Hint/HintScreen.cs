@@ -59,6 +59,7 @@ public class HintScreen : ActivityScreen
     override protected void OnEnable()
     {
         screenManager.isShowSummary = false;
+        screenManager.gotAnswerRight = false;
         PlayScreen();
     }
 

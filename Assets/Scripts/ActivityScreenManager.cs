@@ -54,7 +54,7 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
     public int selectedIndex; // selected object
 
     public UnityEvent<bool> ChangeScanAudio;
-
+    public bool gotAnswerRight = false;
     override protected void Start()
     {
         ActivitySettings settings = FAST.Application.settings;
@@ -106,7 +106,7 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
 
 
             if (scannedIndex.Equals(0)) {
-                if (teaserIndex == 5)
+                if (teaserIndex == numTeasers -1)
                 {
                     ChangeScreen("end");
                 }
