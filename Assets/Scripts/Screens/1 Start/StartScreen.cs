@@ -64,6 +64,7 @@ public class StartScreen : ActivityScreen
 
         }
 
-            yield return null;
+        audioPlayer.Play(new AudioClip[] { audioLUT["Chime.wav"].audioClip });
+        yield return new WaitWhile(() => audioPlayer.IsRunning);
     }
 }

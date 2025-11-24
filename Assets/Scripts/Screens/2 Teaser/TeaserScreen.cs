@@ -56,8 +56,12 @@ public class TeaserScreen : ActivityScreen
 
 
     override protected IEnumerator PlayScreenAnimation()
-    { // Load and initialize
+    {   
+        // Load and initialize
 
+        audioLUT["Teaser-Dialogue-1-Narration.mp3"].baseFileName = string.Format("Teaser-Dialogue-1-{0}-Narration.mp3",
+            screenManager.teaserName);
+        audioLUT["Teaser-Dialogue-1-Narration.mp3"].Load(FAST.Application.language);
 
         audioLUT["Teaser-Question-2-Narration.mp3"].baseFileName = string.Format("Teaser-Question-2-{0}-Narration.mp3",
             screenManager.teaserName);
@@ -66,6 +70,8 @@ public class TeaserScreen : ActivityScreen
         audioLUT["Teaser-Dialogue-3-Narration.mp3"].baseFileName = string.Format("Teaser-Dialogue-3-{0}-Narration.wav",
             screenManager.teaserName);
         audioLUT["Teaser-Dialogue-3-Narration.mp3"].Load(FAST.Application.language);
+
+        //images
 
         backgroundFromFile.baseFileName = string.Format("Teaser-Background-{0}.png", screenManager.teaserName);
         backgroundFromFile.Load(FAST.Application.language);
@@ -88,8 +94,9 @@ public class TeaserScreen : ActivityScreen
         yield return new WaitForSecondsRealtime(0.25f);
 
         backgroundImage.CrossFadeAlpha(1f, 0.5f, false);
-       
-        yield return new WaitForSecondsRealtime(0.25f);
+
+        audioPlayer.Play(new AudioClip[] { audioLUT["Teaser-Dialogue-1-Narration.mp3"].audioClip });
+        yield return new WaitWhile(() => audioPlayer.IsRunning);
 
 
         DialogueImage.CrossFadeAlpha(1f, 0.5f, false);
