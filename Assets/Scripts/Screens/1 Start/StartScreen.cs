@@ -55,16 +55,16 @@ public class StartScreen : ActivityScreen
         audioPlayer.Play(new AudioClip[] { audioLUT["Start-Prompt-Narration.mp3"].audioClip });
         yield return new WaitWhile(() => audioPlayer.IsRunning);
 
-        if (screenManager.gotAnswerRight)
-        {
-            progress.fillAmount += .333f;
-        }
-        else {
-            progress.fillAmount += .1665f;
+        //if (screenManager.gotAnswerRight)
+        //{
+        //    progress.fillAmount += .333f;
+        //}
+        //else {
+        //    progress.fillAmount += .1665f;
 
-        }
+        //}
 
-        audioPlayer.Play(new AudioClip[] { audioLUT["Chime.wav"].audioClip });
-        yield return new WaitWhile(() => audioPlayer.IsRunning);
+        //audioPlayer.Play(new AudioClip[] { audioLUT["Chime.wav"].audioClip });
+        //yield return new WaitWhile(() => audioPlayer.IsRunning);
     }
 }

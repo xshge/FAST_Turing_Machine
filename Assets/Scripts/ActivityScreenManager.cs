@@ -32,6 +32,8 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using FAST;
+using Unity.VisualScripting;
+using System.Threading.Tasks;
 
 public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
 {
@@ -47,6 +49,7 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
     public string teaserName;
 
     public bool isShowSummary = true;
+    public float progressDuration;
     public int numGuesses;
     [SerializeField]
     private int maxNumGuesses;
@@ -55,6 +58,7 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
 
     public UnityEvent<bool> ChangeScanAudio;
     public bool gotAnswerRight = false;
+    public Progress_Check progress;
     override protected void Start()
     {
         ActivitySettings settings = FAST.Application.settings;
@@ -147,7 +151,7 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
         screens[currentScreenName].OnScanDone();
     }
 
-    override public void ChangeScreen(string newScreenName)
+    override public async void ChangeScreen(string newScreenName)
     {
         if (newScreenName.Equals("start") && scannedIndex.Equals(0)) {
             
@@ -164,11 +168,17 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
         }
 
         if (currentScreenName != null && screens.ContainsKey(currentScreenName)) {
+            if (newScreenName == "summary")
+            {
+                StartCoroutine(progress.Progress());
+                await Task.Delay((int)progressDuration);
+            }
             screens[currentScreenName].gameObject.SetActive(false);
         }
 
         currentScreenName = newScreenName;
         if (currentScreenName != null && screens.ContainsKey(currentScreenName)) {
+          
             screens[currentScreenName].gameObject.SetActive(true);
         }
 
