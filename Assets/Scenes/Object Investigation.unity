@@ -2733,9 +2733,11 @@ MonoBehaviour:
   screenManager: {fileID: 2088020455}
   CorrectFile: {fileID: 464908834}
   Date: {fileID: 35844717}
+  FirstLine: {fileID: 103068534}
   dates:
   - April 12th, 2010
   - ' October 12th, 2025'
+  - We are almost at the end of our journey.
 --- !u!1 &272685970
 GameObject:
   m_ObjectHideFlags: 0
@@ -7160,8 +7162,8 @@ RectTransform:
   m_Children:
   - {fileID: 2068531524}
   - {fileID: 906255791}
-  - {fileID: 1998366703}
   - {fileID: 1142466485}
+  - {fileID: 1998366703}
   m_Father: {fileID: 814831041}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10840,6 +10842,8 @@ MonoBehaviour:
   videoPlayer: {fileID: 272685973}
   videoPlayerFromFile: {fileID: 272685972}
   videoImage: {fileID: 96848204}
+  tray: {fileID: 819800778}
+  spotlight: {fileID: 865259122}
 --- !u!1 &1153013850
 GameObject:
   m_ObjectHideFlags: 0

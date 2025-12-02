@@ -67,7 +67,7 @@ public class TeaserScreen : ActivityScreen
             screenManager.teaserName);
         audioLUT["Teaser-Question-2-Narration.mp3"].Load(FAST.Application.language);
 
-        audioLUT["Teaser-Dialogue-3-Narration.mp3"].baseFileName = string.Format("Teaser-Dialogue-3-{0}-Narration.wav",
+        audioLUT["Teaser-Dialogue-3-Narration.mp3"].baseFileName = string.Format("Teaser-Dialogue-3-{0}-Narration.mp3",
             screenManager.teaserName);
         audioLUT["Teaser-Dialogue-3-Narration.mp3"].Load(FAST.Application.language);
 

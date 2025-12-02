@@ -14,10 +14,15 @@ public class End_Screen : ActivityScreen
     private VideoPlayerFromFile videoPlayerFromFile;
     [SerializeField]
     private RawImage videoImage;
+
+    [SerializeField]
+    GameObject tray, spotlight;
     override protected IEnumerator PlayScreenAnimation()
     {
         // Load and initialize
         videoImage.CrossFadeAlpha(0f, 0f, false);
+        tray.SetActive(false);
+        spotlight.SetActive(false);
 
         videoPlayerFromFile.baseFileName = string.Format("Closing-Video.mp4", screenManager.teaserName);
         videoPlayerFromFile.Load(FAST.Application.language);

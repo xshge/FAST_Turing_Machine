@@ -98,7 +98,8 @@ public class HintScreen : ActivityScreen
         yield return null;
 
         audioPlayer.Play(new AudioClip[] { audioLUT["Hint-Incorrect-SoundEffect.mp3"].audioClip });
-        yield return new WaitForSecondsRealtime(0.25f);
+        yield return new WaitWhile(() => audioPlayer.IsRunning);
+
 
         backgroundImage.CrossFadeAlpha(1f, 0.5f, false);
 

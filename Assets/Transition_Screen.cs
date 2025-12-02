@@ -9,7 +9,8 @@ public class Transition_Screen : ActivityScreen
     private Image CorrectFile;
     [SerializeField]
     private TMP_Text Date;
-
+    [SerializeField]
+    private TMP_Text FirstLine;
     public string[] dates;
     override protected IEnumerator PlayScreenAnimation()
     {   //load Audio 
@@ -17,8 +18,15 @@ public class Transition_Screen : ActivityScreen
           screenManager.teaserName);
         audioLUT["Transition-Narration.mp3"].Load(FAST.Application.language);
 
-
-        Date.text = dates[screenManager.teaserIndex];
+        if(screenManager.teaserIndex + 1 == screenManager.numTeasers)
+        {
+            FirstLine.text = "Great Job! We are almost at the end of our journey.";
+            Date.text = string.Empty;
+        }else
+        {
+            Date.text = dates[screenManager.teaserIndex];
+        }
+            
         CorrectFile.enabled = true;
         CorrectFile.CrossFadeAlpha(0f, 0f, false);
         yield return null;
