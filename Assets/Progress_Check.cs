@@ -33,4 +33,9 @@ public class Progress_Check : MonoBehaviour
 
         yield return new WaitWhile(() => audioPlayer.isPlaying);
     }
+
+    public void Restart()
+    {
+        progress.fillAmount = 0;
+    }
 }

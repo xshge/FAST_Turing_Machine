@@ -105,8 +105,10 @@ public class TeaserScreen : ActivityScreen
 
         question2Image.CrossFadeAlpha(1f, 0.5f, false);
         audioPlayer.Play(new AudioClip[] { audioLUT["Teaser-Dialogue-3-Narration.mp3"].audioClip });
+        
         yield return new WaitWhile(() => audioPlayer.IsRunning);
-      
+        if (screenManager.teaserName == "TAP") yield return new WaitForSeconds(1.5f);
+
 
         //TODO: change screen to the prompt screen;
         screenManager.ChangeScreen("prompt");

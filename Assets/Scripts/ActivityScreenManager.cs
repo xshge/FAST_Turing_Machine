@@ -32,8 +32,9 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using FAST;
-using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using System;
 
 public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
 {
@@ -59,6 +60,7 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
     public UnityEvent<bool> ChangeScanAudio;
     public bool gotAnswerRight = false;
     public Progress_Check progress;
+    bool restarted = false;
     override protected void Start()
     {
         ActivitySettings settings = FAST.Application.settings;
@@ -148,13 +150,14 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
             }
         }
 
-        screens[currentScreenName].OnScanDone();
+            screens[currentScreenName].OnScanDone();
     }
 
     override public async void ChangeScreen(string newScreenName)
     {
         if (newScreenName.Equals("start") && scannedIndex.Equals(0)) {
-            
+
+            StopCoroutine(progress.Progress());
             newScreenName = "teaser";
         }
 
@@ -165,12 +168,18 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
             teaserIndex = ++teaserIndex % numTeasers; // using remainder allows the number to reach six (the max and still goes back to the zero index;
             ActivitySettings settings = FAST.Application.settings;
             teaserName = settings.objectSettings.objectData[teaserIndex].name;
+            restarted = false;
         }
 
         if (currentScreenName != null && screens.ContainsKey(currentScreenName)) {
             if (newScreenName == "summary")
             {
-                StartCoroutine(progress.Progress());
+                if (!restarted)
+                {   
+                    StartCoroutine(progress.Progress());
+
+                }
+                
                 await Task.Delay((int)progressDuration);
             }
             screens[currentScreenName].gameObject.SetActive(false);
@@ -188,24 +197,10 @@ public class ActivityScreenManager : FAST.ScreenManagerTemplate<ActivityScreen>
     }
     protected override IEnumerator ChangeLanguage()
     {
-        if (currentScreenName != null && screens.ContainsKey(currentScreenName)) {
-            screens[currentScreenName].gameObject.SetActive(false);
-        }
-        FAST.Application.ChangeLanguage(FAST.Application.ChangeLanguageMode.Next);
-
-        if (!currentScreenName.Equals("language")) {
-            previousScreenName = currentScreenName;
-        }
-        currentScreenName = "language";
-
-        ActivityScreen languageScreen = screens["language"];
-        languageScreen.gameObject.SetActive(true);
-        yield return new WaitWhile(() => languageScreen.IsPlaying);
-        languageScreen.gameObject.SetActive(false);
-
-        currentScreenName = previousScreenName;
-        if (currentScreenName != null && screens.ContainsKey(currentScreenName)) {
-            screens[currentScreenName].gameObject.SetActive(true);
-        }
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        progress.Restart();
+        restarted = true; 
+        base.OnRestart();
+        yield break;
     }
 }

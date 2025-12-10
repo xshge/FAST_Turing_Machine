@@ -44,7 +44,7 @@ public class SummaryScreen : ActivityScreen
     private ImageFromFile backimage;
     private ImageFromFile objectImageFromFile;
     private ImageFromFile[] infoImagesFromFile = new ImageFromFile[3];
-
+    public Progress_Check progress;
     override protected void Awake()
     {
         base.Awake();
@@ -110,6 +110,17 @@ public class SummaryScreen : ActivityScreen
 
         yield return new WaitForSecondsRealtime(1f);
 
-        screenManager.ChangeScreen("start");
+        StopCoroutine(progress.Progress());
+        if (screenManager.teaserIndex == screenManager.numTeasers - 1)
+
+        {
+            screenManager.ChangeScreen("end");
+
+        }
+        else
+        {
+            screenManager.ChangeScreen("start");
+
+        }
     }
 }
